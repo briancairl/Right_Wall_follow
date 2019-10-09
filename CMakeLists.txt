@@ -135,8 +135,6 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(right_wall_follow src/right_wall_follow.cpp)
-add_executable(turtle_spin src/turtle_spin.cpp)
 add_executable(rwf_sonar src/rwf_sonar.cpp)
 
 ## Rename C++ executable without prefix
