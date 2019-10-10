@@ -7,11 +7,11 @@
 #include <cmath>
 #include <vector>
 
-class rwf {
+class RightWallFollow {
 
 public:
     // Class constructor
-    rwf(ros::NodeHandle n);
+    RightWallFollow(ros::NodeHandle n);
 
     // Action message 
     geometry_msgs::Twist action;
@@ -37,7 +37,7 @@ public:
     void move();
 };
 
-rwf::rwf(ros::NodeHandle n){
+RightWallFollow::RightWallFollow(ros::NodeHandle n){
 
     ROS_INFO("Initializing right wall follow object");
 
@@ -51,7 +51,7 @@ rwf::rwf(ros::NodeHandle n){
 
 }
 
-void rwf::RangeScanCallbackFrontSensor(const sensor_msgs::Range::ConstPtr& frontReading){
+void RightWallFollow::RangeScanCallbackFrontSensor(const sensor_msgs::Range::ConstPtr& frontReading){
 
 	front_range = frontReading->range;
 
@@ -62,7 +62,7 @@ void rwf::RangeScanCallbackFrontSensor(const sensor_msgs::Range::ConstPtr& front
 	// ROS_INFO("value at front: %f cm.",front_range);
 }
 
-void rwf::RangeScanCallbackRightSensor(const sensor_msgs::Range::ConstPtr& rightReading){
+void RightWallFollow::RangeScanCallbackRightSensor(const sensor_msgs::Range::ConstPtr& rightReading){
 
     right_range = rightReading->range;
 
@@ -73,7 +73,7 @@ void rwf::RangeScanCallbackRightSensor(const sensor_msgs::Range::ConstPtr& right
     // ROS_INFO("value at right: %f cm.",right_range);
 }
 
-void rwf::move() {
+void RightWallFollow::move() {
 
     action.linear.x  = 0.0;
     action.angular.z = 0.0;
@@ -112,7 +112,7 @@ int main(int argc, char **argv){
 	// complete node initialization
 	ros::NodeHandle n;
 
-	rwf test_object(n);
+	RightWallFollow test_object(n);
 
     // Loop at 10
     ros::Rate loop_rate(10);
