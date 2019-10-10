@@ -82,7 +82,7 @@ void RightWallFollow::move() {
     action.linear.x  = 0.0;
     action.angular.z = 0.0;
 
-    if ((front_range < front_thresh)) { // If you are too close to the wall, turn left
+    if (front_range < front_thresh) { // If you are too close to the wall, turn left
 
         action.angular.z = 0.25;
         action.linear.x  = 0.0;
