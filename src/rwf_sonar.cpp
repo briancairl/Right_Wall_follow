@@ -13,6 +13,10 @@ public:
     // Class constructor
     RightWallFollow(ros::NodeHandle n);
 
+    // Right wall follow algorithm
+    void move();
+	
+private:
     // Action message 
     geometry_msgs::Twist action;
 
@@ -32,9 +36,6 @@ public:
     // Callback functons to get readings from front and right sensors
     void RangeScanCallbackFrontSensor(const sensor_msgs::Range::ConstPtr& frontReading);
     void RangeScanCallbackRightSensor(const sensor_msgs::Range::ConstPtr& rightReading);    
-
-    // Right wall follow algorithm
-    void move();
 };
 
 RightWallFollow::RightWallFollow(ros::NodeHandle n){
@@ -53,13 +54,13 @@ RightWallFollow::RightWallFollow(ros::NodeHandle n){
 
 void RightWallFollow::RangeScanCallbackFrontSensor(const sensor_msgs::Range::ConstPtr& frontReading){
 
-	front_range = frontReading->range;
+    front_range = frontReading->range;
 
     front_range = front_range*(100.0);
 
     // for debugging
 
-	// ROS_INFO("value at front: %f cm.",front_range);
+    // ROS_INFO("value at front: %f cm.",front_range);
 }
 
 void RightWallFollow::RangeScanCallbackRightSensor(const sensor_msgs::Range::ConstPtr& rightReading){
