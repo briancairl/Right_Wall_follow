@@ -17,6 +17,8 @@ public:
     void move();
 	
 private:
+    RightWallFollow() = default;
+
     // Action message 
     geometry_msgs::Twist action;
 
@@ -26,20 +28,21 @@ private:
     ros::Subscriber reading_right;
 
     // Threshold where certain actions are taken (in cm)
-    float right_thresh = 23;
-    float front_thresh = 23;
+    float right_thresh = 23.f;
+    float front_thresh = 23.f;
 
     // Sensor readings
-    float front_range;
-    float right_range;
+    float front_range = 0.0f;
+    float right_range = 0.0f;
 
     // Callback functons to get readings from front and right sensors
     void RangeScanCallbackFrontSensor(const sensor_msgs::Range::ConstPtr& frontReading);
     void RangeScanCallbackRightSensor(const sensor_msgs::Range::ConstPtr& rightReading);    
 };
 
-RightWallFollow::RightWallFollow(ros::NodeHandle n){
-
+RightWallFollow::RightWallFollow(ros::NodeHandle n) :
+    RightWallFollow{}
+{
     ROS_INFO("Initializing right wall follow object");
 
     reading_front = n.subscribe("robot0/sonar_0", 1000, &rwf::RangeScanCallbackFrontSensor,this);
