@@ -10,12 +10,11 @@
 class rwf {
 
 public:
-
     // Class constructor
     rwf(ros::NodeHandle n);
 
     // Action message 
-	geometry_msgs::Twist action;
+    geometry_msgs::Twist action;
 
     // ROS necessities
     ros::Publisher pub;
