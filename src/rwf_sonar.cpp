@@ -26,16 +26,15 @@ public:
     float front_thresh = 23;
 
     // Sensor readings
-	float front_range;
+    float front_range;
     float right_range;
 
     // Callback functons to get readings from front and right sensors
-	void RangeScanCallbackFrontSensor(const sensor_msgs::Range::ConstPtr& frontReading);
+    void RangeScanCallbackFrontSensor(const sensor_msgs::Range::ConstPtr& frontReading);
     void RangeScanCallbackRightSensor(const sensor_msgs::Range::ConstPtr& rightReading);    
 
     // Right wall follow algorithm
-	void move();
-
+    void move();
 };
 
 rwf::rwf(ros::NodeHandle n){
