@@ -116,10 +116,10 @@ int main(int argc, char **argv){
 	// complete node initialization
 	ros::NodeHandle n;
 
-	RightWallFollow test_object(n);
+	RightWallFollow test_object{n};
 
     // Loop at 10
-    ros::Rate loop_rate(10);
+    ros::Rate loop_rate{10};
 
     while(n.ok()){
 
