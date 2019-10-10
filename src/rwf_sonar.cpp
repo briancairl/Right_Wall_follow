@@ -7,15 +7,20 @@
 #include <cmath>
 #include <vector>
 
-class rwf {
+class RightWallFollow {
 
 public:
-
     // Class constructor
-    rwf(ros::NodeHandle n);
+    RightWallFollow(ros::NodeHandle n);
+
+    // Right wall follow algorithm
+    void move();
+	
+private:
+    RightWallFollow() = default;
 
     // Action message 
-	geometry_msgs::Twist action;
+    geometry_msgs::Twist action;
 
     // ROS necessities
     ros::Publisher pub;
@@ -23,29 +28,26 @@ public:
     ros::Subscriber reading_right;
 
     // Threshold where certain actions are taken (in cm)
-    float right_thresh = 23;
-    float front_thresh = 23;
+    float right_thresh = 23.f;
+    float front_thresh = 23.f;
 
     // Sensor readings
-	float front_range;
-    float right_range;
+    float front_range = 0.0f;
+    float right_range = 0.0f;
 
     // Callback functons to get readings from front and right sensors
-	void RangeScanCallbackFrontSensor(const sensor_msgs::Range::ConstPtr& frontReading);
-    void RangeScanCallbackRightSensor(const sensor_msgs::Range::ConstPtr& rightReading);    
-
-    // Right wall follow algorithm
-	void move();
-
+    void rangeScanCallbackFrontSensor(const sensor_msgs::Range::ConstPtr& frontReading);
+    void rangeScanCallbackRightSensor(const sensor_msgs::Range::ConstPtr& rightReading);    
 };
 
-rwf::rwf(ros::NodeHandle n){
-
+RightWallFollow::RightWallFollow(ros::NodeHandle n) :
+    RightWallFollow{}
+{
     ROS_INFO("Initializing right wall follow object");
 
-    reading_front = n.subscribe("robot0/sonar_0", 1000, &rwf::RangeScanCallbackFrontSensor,this);
+    reading_front = n.subscribe("robot0/sonar_0", 1000, &rwf::rangeScanCallbackFrontSensor,this);
 
-    reading_right = n.subscribe("robot0/sonar_1", 1000, &rwf::RangeScanCallbackRightSensor,this);
+    reading_right = n.subscribe("robot0/sonar_1", 1000, &rwf::rangeScanCallbackRightSensor,this);
 
     pub = n.advertise<geometry_msgs::Twist>("robot0/cmd_vel",1000);
 
@@ -53,18 +55,18 @@ rwf::rwf(ros::NodeHandle n){
 
 }
 
-void rwf::RangeScanCallbackFrontSensor(const sensor_msgs::Range::ConstPtr& frontReading){
+void RightWallFollow::RangeScanCallbackFrontSensor(const sensor_msgs::Range::ConstPtr& frontReading){
 
-	front_range = frontReading->range;
+    front_range = frontReading->range;
 
     front_range = front_range*(100.0);
 
     // for debugging
 
-	// ROS_INFO("value at front: %f cm.",front_range);
+    // ROS_INFO("value at front: %f cm.",front_range);
 }
 
-void rwf::RangeScanCallbackRightSensor(const sensor_msgs::Range::ConstPtr& rightReading){
+void RightWallFollow::RangeScanCallbackRightSensor(const sensor_msgs::Range::ConstPtr& rightReading){
 
     right_range = rightReading->range;
 
@@ -75,12 +77,12 @@ void rwf::RangeScanCallbackRightSensor(const sensor_msgs::Range::ConstPtr& right
     // ROS_INFO("value at right: %f cm.",right_range);
 }
 
-void rwf::move() {
+void RightWallFollow::move() {
 
     action.linear.x  = 0.0;
     action.angular.z = 0.0;
 
-    if ((front_range < front_thresh)) { // If you are too close to the wall, turn left
+    if (front_range < front_thresh) { // If you are too close to the wall, turn left
 
         action.angular.z = 0.25;
         action.linear.x  = 0.0;
@@ -114,10 +116,10 @@ int main(int argc, char **argv){
 	// complete node initialization
 	ros::NodeHandle n;
 
-	rwf test_object(n);
+	RightWallFollow test_object{n};
 
     // Loop at 10
-    ros::Rate loop_rate(10);
+    ros::Rate loop_rate{10};
 
     while(n.ok()){
 
