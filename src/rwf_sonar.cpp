@@ -36,8 +36,8 @@ private:
     float right_range = 0.0f;
 
     // Callback functons to get readings from front and right sensors
-    void RangeScanCallbackFrontSensor(const sensor_msgs::Range::ConstPtr& frontReading);
-    void RangeScanCallbackRightSensor(const sensor_msgs::Range::ConstPtr& rightReading);    
+    void rangeScanCallbackFrontSensor(const sensor_msgs::Range::ConstPtr& frontReading);
+    void rangeScanCallbackRightSensor(const sensor_msgs::Range::ConstPtr& rightReading);    
 };
 
 RightWallFollow::RightWallFollow(ros::NodeHandle n) :
@@ -45,9 +45,9 @@ RightWallFollow::RightWallFollow(ros::NodeHandle n) :
 {
     ROS_INFO("Initializing right wall follow object");
 
-    reading_front = n.subscribe("robot0/sonar_0", 1000, &rwf::RangeScanCallbackFrontSensor,this);
+    reading_front = n.subscribe("robot0/sonar_0", 1000, &rwf::rangeScanCallbackFrontSensor,this);
 
-    reading_right = n.subscribe("robot0/sonar_1", 1000, &rwf::RangeScanCallbackRightSensor,this);
+    reading_right = n.subscribe("robot0/sonar_1", 1000, &rwf::rangeScanCallbackRightSensor,this);
 
     pub = n.advertise<geometry_msgs::Twist>("robot0/cmd_vel",1000);
 
